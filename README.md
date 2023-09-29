@@ -1,4 +1,4 @@
-<h1>Bank Management System Software Design Document</h1>
+Bank Management System Software Design Document
 Table of Contents
 Introduction
 Purpose of the Document
