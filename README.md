@@ -1,3 +1,8 @@
+Name: Abia Khan and Mario Salinas 
+NetID: ac6212 and ry7931
+Phase 2
+
+
 Bank Management System Software Design Document
 Table of Contents
 Introduction
