@@ -9,6 +9,7 @@
 using namespace std;
 
 #include "Account.h"
+#include "User.h"
 
 int main() {
     string inputFileName, outputFileName;
@@ -47,7 +48,7 @@ int main() {
         switch (command) {
             case 'D':
             case 'd':
-                cout << "*** YOU HAVE SELECTED THE DEPOSIT FUNDS OPTION***" << endl;
+                cout << "*** YOU HAVE SELECTED TO DEPOSIT FUNDS OPTION***" << endl;
 
                 float depositAmount;
                 cout << "Enter the amount that you would like to deposit: ";
@@ -62,7 +63,7 @@ int main() {
             case 'W':
             case 'w':
                 float withdrawAmount;
-                cout << "*** YOU HAVE SELECTED THE WITHDRAW FUNDS OPTION***" << endl;
+                cout << "*** YOU HAVE SELECTED TO WITHDRAW FUNDS OPTION***" << endl;
 
                 cout << "Enter the amount that you would like to withdraw: ";
                 cin >> withdrawAmount;

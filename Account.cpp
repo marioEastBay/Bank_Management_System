@@ -2,10 +2,14 @@
 // Created by Mario O Salinas on 9/29/23.
 //
 
-#include <iostream>
+#include "Account.h"
+
 using namespace std;
 
-#include "Account.h"
+
+Account::Account() {
+    balance = 0;
+}
 
 void Account::DepositFunds(float amount) {
     balance += amount;
