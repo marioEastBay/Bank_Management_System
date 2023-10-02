@@ -6,10 +6,14 @@
 
 #include <iostream>
 #include <fstream>
+#include <cctype>
 using namespace std;
 
 #include "Account.h"
 #include "User.h"
+
+bool check_if_input_is_int (int);
+
 
 int main() {
     string inputFileName, outputFileName;
@@ -121,6 +125,7 @@ int main() {
         << "D: Deposit Funds. " << endl
         << "W: Withdraw Funds. " << endl
         << "B: Check your account balance." << endl
+        << "C: Card Settings." << endl
         << "Q: Quit." << endl
         << "Enter a command to proceed: ";
         cin >> command;
@@ -128,12 +133,27 @@ int main() {
 
         switch (command) {
             case 'D':
-            case 'd':
+            case 'd': {
                 cout << "*** YOU HAVE SELECTED TO DEPOSIT FUNDS OPTION***" << endl;
 
                 float depositAmount;
-                cout << "Enter the amount that you would like to deposit: ";
-                cin >> depositAmount;
+                bool isValidated = false;
+                bool isInt = true;
+
+                // FIX THIS WHILE LOOP
+                while (!isValidated) {
+                    cout << "Enter the amount that you would like to deposit: ";
+                    cin >> depositAmount;
+                    // make sure that input is of type int
+                    isInt = check_if_input_is_int(depositAmount);
+                    if (isInt == false) {
+                        cout << "Invalid input. Please try again." << endl;
+                        isValidated = false;
+                    } else if (isInt == true) {
+                        isValidated = true;
+                    }
+                }
+
                 account.DepositFunds(depositAmount);
 
                 cout << "$" << depositAmount << " has been deposited into your bank account." << endl;
@@ -141,6 +161,7 @@ int main() {
                 cout << "Return to the command menu? Enter 1 if yes. Enter 0 if no: ";
                 cin >> displayCommandMenu;
                 break;
+            }
             case 'W':
             case 'w':
                 float withdrawAmount;
@@ -157,13 +178,63 @@ int main() {
                 break;
             case 'B':
             case 'b':
-                cout << "*** YOU HAVE SELECTED TO CHECK YOUR ACCOUNT BALANCE***" << endl;
+                cout << "*** YOU HAVE SELECTED TO CHECK YOUR ACCOUNT BALANCE ***" << endl;
 
                 cout << "Your account balance is: " << account.GetBalance() << endl << endl;
 
                 cout << "Return to the command menu? Enter 1 if yes. Enter 0 if no: ";
                 cin >> displayCommandMenu;
                 break;
+            case 'C':
+            case 'c': {
+                cout << "*** YOU HAVE SELECTED TO EDIT YOUR CARD SETTINGS ***" << endl << endl;
+
+                char cardMenuCommand = 'I'; // initialize variable with a dummy value
+
+                cout << "T: Turn card On or Off" << endl
+                     << "R: Replace My Card" << endl
+                     << "A: Activate Card" << endl
+                     << "Q: Quit" << endl
+                     << "Enter a command to proceed: ";
+                cin >> cardMenuCommand;
+
+                switch (cardMenuCommand) {
+                    case 'T':
+                    case 't': {
+                        User user;
+
+                        cout << "*** YOU HAVE SELECTED TO TURN YOUR CARD ON OR OFF ***" << endl;
+                        int tempSSN;
+
+                        // NOTE TO SELF: enhance this feature in the future by prompting the user
+                        // to enter only the last four digits of a social security number
+                        cout << "To proceed, please verify your social security number: ";
+                        cin >> tempSSN;
+
+                        int ssn = user.GetSocialSecurityNum();
+
+                        if (tempSSN == ssn) {
+                            cout << " " << endl;
+                        } else {
+                            cout << "Incorrect social security number. Please try again." << endl;
+                        }
+
+
+                        break;
+                    }
+                    case 'R':
+                    case 'r':
+                        break;
+                    case 'A':
+                    case 'a':
+                        break;
+                    case 'Q':
+                    case 'q':
+                        break;
+                }
+
+                break;
+            }
             case 'Q':
             case 'q':
                 displayCommandMenu = 0;
@@ -173,4 +244,11 @@ int main() {
 
     cout << endl << "Thank you for banking with Pioneer Bank." << endl;
     return 0;
+}
+
+
+bool check_if_input_is_int (int input) {
+        if (isdigit(input) == false)
+            return false;
+    return true;
 }
