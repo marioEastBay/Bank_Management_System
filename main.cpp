@@ -6,14 +6,10 @@
 
 #include <iostream>
 #include <fstream>
-#include <cctype>
 using namespace std;
 
 #include "Account.h"
 #include "User.h"
-
-bool check_if_input_is_int (int);
-
 
 int main() {
     string inputFileName, outputFileName;
@@ -134,23 +130,18 @@ int main() {
         switch (command) {
             case 'D':
             case 'd': {
-                cout << "*** YOU HAVE SELECTED TO DEPOSIT FUNDS OPTION***" << endl;
+                cout << "*** YOU HAVE SELECTED TO DEPOSIT FUNDS ***" << endl;
 
                 float depositAmount;
-                bool isValidated = false;
-                bool isInt = true;
 
-                // FIX THIS WHILE LOOP
-                while (!isValidated) {
+                // verify that user has entered a value that is of data type int or float
+                for (;;) {
                     cout << "Enter the amount that you would like to deposit: ";
-                    cin >> depositAmount;
-                    // make sure that input is of type int
-                    isInt = check_if_input_is_int(depositAmount);
-                    if (isInt == false) {
-                        cout << "Invalid input. Please try again." << endl;
-                        isValidated = false;
-                    } else if (isInt == true) {
-                        isValidated = true;
+                    if (cin >> depositAmount)
+                        break;
+                    else {
+                        cout << "Please enter a valid value." << endl;
+                        cin.clear();
                     }
                 }
 
@@ -167,8 +158,16 @@ int main() {
                 float withdrawAmount;
                 cout << "*** YOU HAVE SELECTED TO WITHDRAW FUNDS OPTION***" << endl;
 
-                cout << "Enter the amount that you would like to withdraw: ";
-                cin >> withdrawAmount;
+                for (;;) {
+                    cout << "Enter the amount that you would like to withdraw: ";
+                    if (cin >> withdrawAmount)
+                        break;
+                    else {
+                        cout << "Please enter a valid value." << endl;
+                        cin.clear();
+                    }
+                }
+
                 account.WithdrawFunds(withdrawAmount);
 
                 cout << "$" << withdrawAmount << " has been withdrawn from your account." << endl;
@@ -242,13 +241,6 @@ int main() {
         }
     }
 
-    cout << endl << "Thank you for banking with Pioneer Bank." << endl;
+    cout << endl << "You have chosen to exit the program. Thank you for banking with Pioneer Bank." << endl;
     return 0;
-}
-
-
-bool check_if_input_is_int (int input) {
-        if (isdigit(input) == false)
-            return false;
-    return true;
 }
