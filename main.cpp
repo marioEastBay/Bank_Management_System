@@ -15,7 +15,8 @@ int main() {
     string inputFileName, outputFileName;
     ifstream inputFile;
     ofstream outputFile;
-    int displayCommandMenu = 1;
+    int displayCommandMenu;
+    char mainMenuCommand = 'I';     // initialize variable with a dummy value
     char command = 'I';             // initialize command variable with a dummy value
 
     Account account;                // this is a temporary Account object. will be changed once
@@ -32,6 +33,86 @@ int main() {
     if (!inputFile.good()) {
         cout << "I/O error. Can't find the input file! \n";
         exit(2);
+    }
+
+    cout << "*** Welcome to Pioneer Bank. ***" << endl;
+    cout << "L: Login" << endl
+    << "N: Create a New Account." << endl
+    << "Q: Quit." << endl
+    << "Enter a command to proceed: ";
+    cin  >> mainMenuCommand;
+
+    switch(mainMenuCommand) {
+        case 'L':
+        case 'l': {
+            string username;
+            string password;
+
+           User user;
+
+            cout << "Please enter your user information." << endl;
+            cout << "Username: ";
+            cin >> username;
+            cout << "Password: ";
+            cin >> password;
+
+            user.PutUsername(username);
+            user.PutPassword(password);
+
+            // allow user to enter the command menu below
+            displayCommandMenu = 1;
+            break;
+        }
+        case 'N':
+        case 'n': {
+            int informationIsVerified = 1;
+
+            while (informationIsVerified != 0) {
+                string username;
+                string password;
+                string address;
+                int socialSecurityNumber;
+
+                User newUser;
+                cout << "Please enter your user information." << endl;
+                cout << "Select a username: ";
+                cin >> username;
+                cout << "Select a password: ";
+                cin >> password;
+                cout << "Enter your address: ";
+                cin >> address;
+                cout << "Enter your Social Security Number: ";
+                cin >> socialSecurityNumber;
+
+                newUser.PutUsername(username);
+                newUser.PutPassword(password);
+                newUser.PutAddress(address);
+                newUser.PutSocialSecurityNum(socialSecurityNumber);
+
+                cout << "You have entered the following information: " << endl
+                     << "Username: " << newUser.GetUsername() << endl
+                     // NOTE TO SELF: create a feature that turns PW characters
+                     // into asterisks
+                     << "Password: " << newUser.GetPassword() << endl
+                     << "Address: " << newUser.GetAddress() << endl
+                     << "Social Security Number: " << newUser.GetSocialSecurityNum() << endl
+                     << "Is this information correct? Enter 1 if yes. Enter 0 if no: ";
+                cin >> informationIsVerified;
+
+                if (informationIsVerified == 0) {
+                    cout << "You have entered incorrect user information." << endl;
+                } else if (informationIsVerified == 1) {
+                    cout << "You have created a new account." << endl;
+                }
+            }
+            displayCommandMenu = 1;
+            break;
+        }
+        case 'Q':
+        case 'q':
+            cout << endl << "Thank you for choosing Pioneer Bank. Program will now close." << endl;
+            displayCommandMenu = 0;
+            break;
     }
 
     while (displayCommandMenu != 0) {
@@ -83,9 +164,13 @@ int main() {
                 cout << "Return to the command menu? Enter 1 if yes. Enter 0 if no: ";
                 cin >> displayCommandMenu;
                 break;
+            case 'Q':
+            case 'q':
+                displayCommandMenu = 0;
+                break;
         }
     }
 
-    cout << "Thank you for banking with Pioneer Bank." << endl;
+    cout << endl << "Thank you for banking with Pioneer Bank." << endl;
     return 0;
 }
