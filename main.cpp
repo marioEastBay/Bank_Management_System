@@ -22,18 +22,20 @@ int main() {
     Account account;                // this is a temporary Account object. will be changed once
                                     // a file input output stream is created
 
-    cout << "Enter the name of the input file (hint: it's input.txt): ";
-    cin >> inputFileName;
+
+    cout << "Loading master files..." << endl;
+    inputFileName = "masterInputFile.trn";
     inputFile.open(inputFileName.c_str());
 
-    cout << "Enter the name of the output file (hint: it's output.txt): ";
-    cin >> outputFileName;
+    outputFileName = "masterOutputFile.dat";
     outputFile.open(outputFileName.c_str());
 
     if (!inputFile.good()) {
-        cout << "I/O error. Can't find the input file! \n";
+        cout << "I/O error. Can't find the master input file! \n";
         exit(2);
     }
+
+    cout << "Master files have succesfully loaded." << endl << endl;
 
     cout << "*** Welcome to Pioneer Bank. ***" << endl;
     cout << "L: Login" << endl
@@ -45,10 +47,19 @@ int main() {
     switch(mainMenuCommand) {
         case 'L':
         case 'l': {
+            // open Accounts file
+            string iFile = "Accounts.dat";
+            ifstream inFile;
+            inFile.open(inputFileName.c_str());
+            if (!inputFile.good()) {
+                cout << "I/O error. Can't find the master input file! \n";
+                exit(2);
+            }
+
             string username;
             string password;
 
-           User user;
+            User user;
 
             cout << "Please enter your user information." << endl;
             cout << "Username: ";
@@ -65,6 +76,15 @@ int main() {
         }
         case 'N':
         case 'n': {
+            // open Accounts file
+            string iFile = "Accounts.dat";
+            ifstream inFile;
+            inFile.open(inputFileName.c_str());
+            if (!inputFile.good()) {
+                cout << "I/O error. Can't find the master input file! \n";
+                exit(2);
+            }
+
             int informationIsVerified = 1;
 
             while (informationIsVerified != 0) {
@@ -117,7 +137,7 @@ int main() {
 
     while (displayCommandMenu != 0) {
         // Create a command menu
-        cout << "*** Welcome to your bank management system. ***" << endl
+        cout << endl << "*** Welcome to your bank management system. ***" << endl
         << "D: Deposit Funds. " << endl
         << "W: Withdraw Funds. " << endl
         << "B: Check your account balance." << endl
@@ -154,8 +174,10 @@ int main() {
                 break;
             }
             case 'W':
-            case 'w':
+            case 'w': {
                 float withdrawAmount;
+                float currentBalance = account.GetBalance();
+
                 cout << "*** YOU HAVE SELECTED TO WITHDRAW FUNDS OPTION***" << endl;
 
                 for (;;) {
@@ -167,7 +189,10 @@ int main() {
                         cin.clear();
                     }
                 }
-
+                // FINISH THIS CATCH
+                if (withdrawAmount > currentBalance) {
+                    cout << "This exceeds your current balance. Please enter a new balance to deposit into your account." << endl;
+                }
                 account.WithdrawFunds(withdrawAmount);
 
                 cout << "$" << withdrawAmount << " has been withdrawn from your account." << endl;
@@ -175,6 +200,7 @@ int main() {
                 cout << "Return to the command menu? Enter 1 if yes. Enter 0 if no: ";
                 cin >> displayCommandMenu;
                 break;
+            }
             case 'B':
             case 'b':
                 cout << "*** YOU HAVE SELECTED TO CHECK YOUR ACCOUNT BALANCE ***" << endl;
@@ -217,7 +243,6 @@ int main() {
                         } else {
                             cout << "Incorrect social security number. Please try again." << endl;
                         }
-
 
                         break;
                     }
