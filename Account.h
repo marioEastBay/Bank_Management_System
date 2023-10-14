@@ -9,8 +9,11 @@
 class Account {
 private:
     float balance;
+    string userName;
 public:
     Account();
+    void SetUsername(string);
+    string GetUsername(string);
     void DepositFunds(float);
     void WithdrawFunds(float);
     float GetBalance();
@@ -19,6 +22,15 @@ public:
 
 Account::Account() {
     balance = 0;
+    userName = " ";
+}
+
+void Account::SetUsername(string uName) {
+    userName = uName;
+}
+
+string Account::GetUsername(string) {
+    return userName;
 }
 
 void Account::DepositFunds(float amount) {

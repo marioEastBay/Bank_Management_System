@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 #include "Account.h"
@@ -22,6 +23,8 @@ int main() {
     Account account;                // this is a temporary Account object. will be changed once
                                     // a file input output stream is created
 
+    User user;      // create an instance of a user
+    User newUser;
 
     cout << "Loading master files..." << endl;
     inputFileName = "masterInputFile.trn";
@@ -60,6 +63,7 @@ int main() {
             string password;
 
             User user;
+            Account userAcct;
 
             cout << "Please enter your user information." << endl;
             cout << "Username: ";
@@ -70,16 +74,24 @@ int main() {
             user.PutUsername(username);
             user.PutPassword(password);
 
+            userAcct.SetUsername(username);
+
             // allow user to enter the command menu below
             displayCommandMenu = 1;
             break;
         }
         case 'N':
         case 'n': {
+            vector<string> outputLines;
             // open Accounts file
-            string iFile = "Accounts.dat";
-            ifstream inFile;
-            inFile.open(inputFileName.c_str());
+            string inFile = "AccountsInput.trn";
+            string outFile = "AccountsOutput.dat";
+            fstream inputFile;
+            fstream outputFile;
+            inputFile.open(inFile.c_str());
+            outputFile.open(outFile.c_str());
+
+
             if (!inputFile.good()) {
                 cout << "I/O error. Can't find the master input file! \n";
                 exit(2);
@@ -104,18 +116,16 @@ int main() {
                 cout << "Enter your Social Security Number: ";
                 cin >> socialSecurityNumber;
 
-                newUser.PutUsername(username);
-                newUser.PutPassword(password);
-                newUser.PutAddress(address);
-                newUser.PutSocialSecurityNum(socialSecurityNumber);
+                outputFile << username << " " << password << " " << address << " " <<
+                socialSecurityNumber << endl;
 
                 cout << "You have entered the following information: " << endl
-                     << "Username: " << newUser.GetUsername() << endl
+                     << "Username: " << username << endl
                      // NOTE TO SELF: create a feature that turns PW characters
                      // into asterisks
-                     << "Password: " << newUser.GetPassword() << endl
-                     << "Address: " << newUser.GetAddress() << endl
-                     << "Social Security Number: " << newUser.GetSocialSecurityNum() << endl
+                     << "Password: " << password << endl
+                     << "Address: " << address << endl
+                     << "Social Security Number: " << socialSecurityNumber << endl
                      << "Is this information correct? Enter 1 if yes. Enter 0 if no: ";
                 cin >> informationIsVerified;
 
@@ -123,8 +133,14 @@ int main() {
                     cout << "You have entered incorrect user information." << endl;
                 } else if (informationIsVerified == 1) {
                     cout << "You have created a new account." << endl;
+                    informationIsVerified = 0;
                 }
+                string outputFileLine;
+                getline(outputFile,outputFileLine);
+                inputFile << outputFileLine;
             }
+
+
             displayCommandMenu = 1;
             break;
         }
