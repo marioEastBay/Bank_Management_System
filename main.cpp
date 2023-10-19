@@ -1,12 +1,11 @@
 //
 //
 //
-//
-//
 
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 using namespace std;
 
 #include "Account.h"
@@ -38,7 +37,7 @@ int main() {
         exit(2);
     }
 
-    cout << "Master files have succesfully loaded." << endl << endl;
+    cout << "Master files have successfully loaded." << endl << endl;
 
     cout << "*** Welcome to Pioneer Bank. ***" << endl;
     cout << "L: Login" << endl
@@ -51,19 +50,15 @@ int main() {
         case 'L':
         case 'l': {
             // open Accounts file
-            string iFile = "Accounts.dat";
-            ifstream inFile;
-            inFile.open(inputFileName.c_str());
-            if (!inputFile.good()) {
-                cout << "I/O error. Can't find the master input file! \n";
-                exit(2);
+            const char* inFile = "Users.dat";
+            ifstream file(inFile, ios::in);
+
+            if (!file.is_open()) {
+                cerr << "Failed to open the AccountsInput file." << endl;
             }
 
             string username;
             string password;
-
-            User user;
-            Account userAcct;
 
             cout << "Please enter your user information." << endl;
             cout << "Username: ";
@@ -74,27 +69,47 @@ int main() {
             user.PutUsername(username);
             user.PutPassword(password);
 
-            userAcct.SetUsername(username);
+            account.SetUsername(username);
 
-            // allow user to enter the command menu below
+            string usernameLine;
+            string passwordLine;
+            int lineNumber = 0;
+            string targetUsername = username;
+            string targetPassword = password;
+            // search Users.dat for username
+            while (getline(file, usernameLine)) {
+                lineNumber++;
+                // Search for the target word in the line
+                size_t pos = usernameLine.find(targetUsername);
+
+                if (pos != string::npos) {
+                    cout << "Found at line " << lineNumber << ", position " << pos << ": " << usernameLine << endl;
+                }
+            }
+            // search Users.dat for password
+            while (getline(file, passwordLine)) {
+                lineNumber++;
+                // Search for the target word in the line
+                size_t pos = passwordLine.find(targetPassword);
+
+                if (pos != string::npos) {
+                   cout << "Found at line " << lineNumber << ", position " << pos << ": " << passwordLine << endl;
+                }
+            }
+
+            file.close();
+            // continue to the command menu
             displayCommandMenu = 1;
             break;
         }
         case 'N':
         case 'n': {
-            vector<string> outputLines;
             // open Accounts file
-            string inFile = "AccountsInput.trn";
-            string outFile = "AccountsOutput.dat";
-            fstream inputFile;
-            fstream outputFile;
-            inputFile.open(inFile.c_str());
-            outputFile.open(outFile.c_str());
+            const char* inFile = "Users.dat";
+            ofstream file(inFile, ios::app);
 
-
-            if (!inputFile.good()) {
-                cout << "I/O error. Can't find the master input file! \n";
-                exit(2);
+            if (!file.is_open()) {
+                cerr << "Failed to open the AccountsInput file." << endl;
             }
 
             int informationIsVerified = 1;
@@ -116,8 +131,13 @@ int main() {
                 cout << "Enter your Social Security Number: ";
                 cin >> socialSecurityNumber;
 
-                outputFile << username << " " << password << " " << address << " " <<
+                file << username << " " << password << " " << address << " " <<
                 socialSecurityNumber << endl;
+
+                newUser.PutUsername(username);
+                newUser.PutPassword(password);
+                newUser.PutAddress(address);
+                newUser.PutSocialSecurityNum(socialSecurityNumber);
 
                 cout << "You have entered the following information: " << endl
                      << "Username: " << username << endl
@@ -135,12 +155,9 @@ int main() {
                     cout << "You have created a new account." << endl;
                     informationIsVerified = 0;
                 }
-                string outputFileLine;
-                getline(outputFile,outputFileLine);
-                inputFile << outputFileLine;
             }
 
-
+            file.close();
             displayCommandMenu = 1;
             break;
         }
