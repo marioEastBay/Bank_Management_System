@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <string>
 using namespace std;
 
@@ -23,7 +22,6 @@ int main() {
                                     // a file input output stream is created
 
     User user;      // create an instance of a user
-    User newUser;
 
     cout << "Loading master files..." << endl;
     inputFileName = "masterInputFile.trn";
@@ -59,41 +57,53 @@ int main() {
 
             string username;
             string password;
+            bool promptUser = 1;
 
-            cout << "Please enter your user information." << endl;
-            cout << "Username: ";
-            cin >> username;
-            cout << "Password: ";
-            cin >> password;
+            while (promptUser == 1) {
+                cout << "Please enter your user information." << endl;
+                cout << "Username: ";
+                cin >> username;
+                cout << "Password: ";
+                cin >> password;
 
-            user.PutUsername(username);
-            user.PutPassword(password);
+                user.PutUsername(username);
+                user.PutPassword(password);
 
-            account.SetUsername(username);
+                account.SetUsername(username);
 
-            string usernameLine;
-            string passwordLine;
-            int lineNumber = 0;
-            string targetUsername = username;
-            string targetPassword = password;
-            // search Users.dat for username
-            while (getline(file, usernameLine)) {
-                lineNumber++;
-                // Search for the target word in the line
-                size_t pos = usernameLine.find(targetUsername);
+                string usernameLine;
+                string passwordLine;
+                int lineNumber = 0;
+                string targetUsername = username;
+                string targetPassword = password;
+                // search Users.dat for username
+                while (getline(file, usernameLine)) {
+                    lineNumber++;
+                    // Search for the target word in the line
+                    size_t pos = usernameLine.find(targetUsername);
 
-                if (pos != string::npos) {
-                    cout << "Found at line " << lineNumber << ", position " << pos << ": " << usernameLine << endl;
+                    if (pos != string::npos) {
+                        promptUser = 0;
+                        //cout << "Found at line " << lineNumber << ", position " << pos << ": " << usernameLine << endl;
+                        break;
+                    } else {
+                        break;
+                    }
                 }
-            }
-            // search Users.dat for password
-            while (getline(file, passwordLine)) {
-                lineNumber++;
-                // Search for the target word in the line
-                size_t pos = passwordLine.find(targetPassword);
+                // search Users.dat for password
+                while (getline(file, passwordLine)) {
+                    lineNumber++;
+                    // Search for the target word in the line
+                    size_t pos = passwordLine.find(targetPassword);
 
-                if (pos != string::npos) {
-                   cout << "Found at line " << lineNumber << ", position " << pos << ": " << passwordLine << endl;
+                    if (pos != string::npos) {
+                        promptUser = 0;
+                        //cout << "Found at line " << lineNumber << ", position " << pos << ": " << passwordLine << endl;
+                        break;
+                    } else {
+                        //cout << "Incorrect password. Please try again." << endl;
+                        break;
+                    }
                 }
             }
 
@@ -134,10 +144,10 @@ int main() {
                 file << username << " " << password << " " << address << " " <<
                 socialSecurityNumber << endl;
 
-                newUser.PutUsername(username);
-                newUser.PutPassword(password);
-                newUser.PutAddress(address);
-                newUser.PutSocialSecurityNum(socialSecurityNumber);
+                user.PutUsername(username);
+                user.PutPassword(password);
+                user.PutAddress(address);
+                user.PutSocialSecurityNum(socialSecurityNumber);
 
                 cout << "You have entered the following information: " << endl
                      << "Username: " << username << endl
@@ -170,7 +180,9 @@ int main() {
 
     while (displayCommandMenu != 0) {
         // Create a command menu
-        cout << endl << "*** Welcome to your bank management system. ***" << endl
+        cout << endl << "*** PIONEER BANK ***" << endl
+        << "Welcome, " << user.GetUsername() << "." << endl
+        << "What would you like to do today?" << endl
         << "D: Deposit Funds. " << endl
         << "W: Withdraw Funds. " << endl
         << "B: Check your account balance." << endl
@@ -209,23 +221,12 @@ int main() {
             case 'W':
             case 'w': {
                 float withdrawAmount;
-                float currentBalance = account.GetBalance();
+                cout << "*** YOU HAVE SELECTED THE WITHDRAW FUNDS OPTION***" << endl;
 
-                cout << "*** YOU HAVE SELECTED TO WITHDRAW FUNDS OPTION***" << endl;
 
-                for (;;) {
-                    cout << "Enter the amount that you would like to withdraw: ";
-                    if (cin >> withdrawAmount)
-                        break;
-                    else {
-                        cout << "Please enter a valid value." << endl;
-                        cin.clear();
-                    }
-                }
-                // FINISH THIS CATCH
-                if (withdrawAmount > currentBalance) {
-                    cout << "This exceeds your current balance. Please enter a new balance to deposit into your account." << endl;
-                }
+                cout << "Enter the amount that you would like to withdraw: ";
+                cin >> withdrawAmount;
+
                 account.WithdrawFunds(withdrawAmount);
 
                 cout << "$" << withdrawAmount << " has been withdrawn from your account." << endl;
@@ -238,13 +239,14 @@ int main() {
             case 'b':
                 cout << "*** YOU HAVE SELECTED TO CHECK YOUR ACCOUNT BALANCE ***" << endl;
 
-                cout << "Your account balance is: " << account.GetBalance() << endl << endl;
+                cout << "Your account balance is: $" << account.GetBalance() << endl << endl;
 
                 cout << "Return to the command menu? Enter 1 if yes. Enter 0 if no: ";
                 cin >> displayCommandMenu;
                 break;
             case 'C':
             case 'c': {
+                /* LAYER 2
                 cout << "*** YOU HAVE SELECTED TO EDIT YOUR CARD SETTINGS ***" << endl << endl;
 
                 char cardMenuCommand = 'I'; // initialize variable with a dummy value
@@ -289,7 +291,7 @@ int main() {
                     case 'q':
                         break;
                 }
-
+                   */
                 break;
             }
             case 'Q':
@@ -299,6 +301,6 @@ int main() {
         }
     }
 
-    cout << endl << "You have chosen to exit the program. Thank you for banking with Pioneer Bank." << endl;
+    cout << endl << "You have chosen to exit the program. Thank you for choosing Pioneer Bank." << endl;
     return 0;
 }

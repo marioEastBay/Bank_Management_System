@@ -27,6 +27,7 @@ public:
 };
 
 
+
 User::User() {
     username = " ";
     password = " ";
@@ -65,5 +66,6 @@ string User::GetAddress() {
 int User::GetSocialSecurityNum() {
     return socialSecurityNumber;
 }
+
 
 #endif //BANK_MANAGEMENT_SYSTEM_USER_H

@@ -38,11 +38,8 @@ void Account::DepositFunds(float amount) {
 }
 
 void Account::WithdrawFunds(float amount) {
-    if (balance < amount) {
-        throw "Insufficient funds in your account.";
-    } else {
-        balance -= amount;
-    }
+    balance -= amount;
+
 }
 
 float Account::GetBalance() {
