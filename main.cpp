@@ -23,20 +23,6 @@ int main() {
 
     User user;      // create an instance of a user
 
-    cout << "Loading master files..." << endl;
-    inputFileName = "masterInputFile.trn";
-    inputFile.open(inputFileName.c_str());
-
-    outputFileName = "masterOutputFile.dat";
-    outputFile.open(outputFileName.c_str());
-
-    if (!inputFile.good()) {
-        cout << "I/O error. Can't find the master input file! \n";
-        exit(2);
-    }
-
-    cout << "Master files have successfully loaded." << endl << endl;
-
     cout << "*** Welcome to Pioneer Bank. ***" << endl;
     cout << "L: Login" << endl
     << "N: Create a New Account." << endl
