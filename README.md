@@ -7,7 +7,6 @@ NetID: ac6212 and ry7931
 Bank Management System 
 
 To run the program, run our main.cpp file as you would in your IDE. 
-
 The program takes the user through two command menus inside the terminal:
 1) Login Menu
 2) Account Menu
