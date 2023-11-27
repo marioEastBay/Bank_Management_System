@@ -38,7 +38,7 @@ int main() {
             ifstream file(inFile, ios::in);
 
             if (!file.is_open()) {
-                cerr << "Failed to open the AccountsInput file." << endl;
+                cerr << "Failed to open the Users.dat file." << endl;
             }
 
             string username;
@@ -232,7 +232,6 @@ int main() {
                 break;
             case 'C':
             case 'c': {
-                /* LAYER 2
                 cout << "*** YOU HAVE SELECTED TO EDIT YOUR CARD SETTINGS ***" << endl << endl;
 
                 char cardMenuCommand = 'I'; // initialize variable with a dummy value
@@ -258,6 +257,7 @@ int main() {
                         cin >> tempSSN;
 
                         int ssn = user.GetSocialSecurityNum();
+                        bool cardIsOn = user.GetCardIsOn();
 
                         if (tempSSN == ssn) {
                             cout << " " << endl;
@@ -265,19 +265,92 @@ int main() {
                             cout << "Incorrect social security number. Please try again." << endl;
                         }
 
+                        int cardCommand;
+
+                        if (cardIsOn == true) {
+                            cout << "Your card is on. "
+                                 << "Would you like to turn off your card? (1 = yes / 0 = no): " << endl;
+                            cin >> cardCommand;
+                            if (cardCommand == 1) {
+                                cout << "Your card has been turned off." << endl;
+                                cardIsOn = false;
+                            } else {
+                                cout << "No changes have been made to your card and your card is still on." << endl;
+                                cardIsOn = true;
+                            }
+                        } else {
+                            cout << "Your card is off."
+                                 << "Would you like to turn on your card? (1 = yes / 0 = no): " << endl;
+                            cin >> cardCommand;
+                            if (cardCommand == 1) {
+                                cout << "Your card has been turned on." << endl;
+                                cardIsOn = true;
+                            } else {
+                                cout << "No changes have been made to your card and your card is still off." << endl;
+                                cardIsOn = false;
+                            }
+                        }
+
+                        user.ChangeCardIsOn(cardIsOn);
+
                         break;
                     }
                     case 'R':
-                    case 'r':
+                    case 'r': {
+                        cout << "*** YOU HAVE SELECTED THE REPLACE MY CARD OPTION ***" << endl;
+
+                        string address = user.GetAddress();
+                        string verifyAddress;
+                        bool rightAddress = true;
+                        int requestNewCard;
+
+                        while (rightAddress) {
+
+                            cout << "Verify your address to continue: " << endl;
+                            cin >> verifyAddress;
+
+                            if (verifyAddress == address) {
+                                cout << "Wrong address. Please enter the correct address. " << endl;
+                                rightAddress = true;
+                            } else {
+                                rightAddress = false;
+                            }
+                        }
+
+                        cout << "You have requested that a new card be sent to your address on file. "
+                        << "Are you sure you want a new card? (1 = yes / 0 = no): ";
+                        cin >> requestNewCard;
+
+                        if (requestNewCard = 1) {
+                            cout << "A new card has been sent to your address. " << endl;
+                        } else {
+                            cout << "Request for a new card has been canceled." << endl;
+                        }
+
                         break;
+                    }
                     case 'A':
-                    case 'a':
+                    case 'a': {
+                        cout << "*** YOU HAVE CHOSEN THE ACTIVATE YOUR CARD OPTION. ***" << endl;
+
+                        int numTurnOnCard;
+                        int tempSSN;
+
+                        cout << "To proceed, please verify your social security number: ";
+                        cin >> tempSSN;
+
+                        cout << "Enter your card verification number: ";
+                        cin >> numTurnOnCard;
+
+                        cout << "Your card has been successfully activated. " << endl;
+
                         break;
+                    }
                     case 'Q':
                     case 'q':
+                        displayCommandMenu = 0;
                         break;
                 }
-                   */
                 break;
             }
             case 'Q':

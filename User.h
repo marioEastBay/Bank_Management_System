@@ -14,16 +14,19 @@ private:
     string password;
     string address;
     int socialSecurityNumber;
+    bool cardIsOn;
 public:
     User();
     void PutUsername(string);
     void PutPassword(string);
     void PutAddress(string);
     void PutSocialSecurityNum(int);
+    void ChangeCardIsOn(bool);
     string GetUsername();
     string GetPassword();
     string GetAddress();
     int GetSocialSecurityNum();
+    bool GetCardIsOn();
 };
 
 
@@ -33,6 +36,7 @@ User::User() {
     password = " ";
     address = " ";
     socialSecurityNumber = 0;
+    cardIsOn = true;
 }
 
 void User::PutUsername(string uName) {
@@ -51,6 +55,10 @@ void User::PutSocialSecurityNum(int ssn) {
     socialSecurityNumber = ssn;
 }
 
+void User::ChangeCardIsOn(bool isOn) {
+    cardIsOn = isOn;
+}
+
 string User::GetUsername() {
     return username;
 }
@@ -67,5 +75,8 @@ int User::GetSocialSecurityNum() {
     return socialSecurityNumber;
 }
 
+bool User::GetCardIsOn() {
+    return cardIsOn;
+}
 
 #endif //BANK_MANAGEMENT_SYSTEM_USER_H
