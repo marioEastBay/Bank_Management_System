@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <unistd.h>
 using namespace std;
 
 #include "Account.h"
@@ -173,6 +174,7 @@ int main() {
         << "W: Withdraw Funds. " << endl
         << "B: Check your account balance." << endl
         << "C: Card Settings." << endl
+        << "L: Apply for a Loan." << endl
         << "Q: Quit." << endl
         << "Enter a command to proceed: ";
         cin >> command;
@@ -348,11 +350,45 @@ int main() {
                     }
                     case 'Q':
                     case 'q':
-                        displayCommandMenu = 0;
                         break;
                 }
                 break;
             }
+            case 'L':
+            case 'l':
+                cout << "*** YOU HAVE SELECTED THE APPLY FOR A LOAN OPTION ***" << endl;
+
+                int tempSSN;
+                int income;
+                int rentOrMortgage;
+                int creditScore;
+                bool isCitizen;
+                int loanAmount;
+
+
+                cout << "To proceed, please verify your social security number: ";
+                cin >> tempSSN;
+
+                cout << "Enter your desired loan amount: ";
+                cin >> loanAmount;
+                cout << "Are you a US Citizen? (1 = yes / 0 = no): " ;
+                cin >> isCitizen;
+                cout << "Enter your annual income: ";
+                cin >> income;
+                cout << "Enter your credit score: ";
+                cin >> creditScore;
+                cout << "Enter your monthly rent or mortgage: ";
+                cin >> rentOrMortgage;
+
+                cout << "Determining your eligibility for a $" << loanAmount << " loan..." << endl << endl;
+
+                cout << "Congratulations! You have been approved for a loan of " << loanAmount << "!" << endl;
+
+                account.DepositFunds(loanAmount);
+
+                cout << "Your loan amount has been deposited into your account." << endl;
+
+                break;
             case 'Q':
             case 'q':
                 displayCommandMenu = 0;
@@ -363,3 +399,4 @@ int main() {
     cout << endl << "You have chosen to exit the program. Thank you for choosing Pioneer Bank." << endl;
     return 0;
 }
+
